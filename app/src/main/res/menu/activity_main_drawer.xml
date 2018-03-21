@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_news"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="News"/>
+        <item
+            android:id="@+id/nav_push"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Push"/>
+        <item
+            android:id="@+id/nav_threads"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Threads"/>
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Google Map"/>
+        <item
+            android:id="@+id/nav_custom_view"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Custom View"/>
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Log out"/>
+        </menu>
+    </item>
+
+</menu>
