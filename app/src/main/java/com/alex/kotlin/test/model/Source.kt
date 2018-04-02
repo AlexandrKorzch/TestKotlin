@@ -1,4 +1,8 @@
 package com.alex.kotlin.test.model
 
+import io.realm.RealmObject
 
-data class Source(val id: String, val name: String)
+open class Source() : RealmObject(){
+    var id: String? = null
+    var name: String? = null
+}

@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <include layout="@layout/progress_bar"/>
+    <data>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_articles"
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewmodel"
+            type="com.alex.kotlin.test.flow.news.NewsViewModel"/>
+
+    </data>
+
+    <com.alex.kotlin.test.util.ScrollChildSwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"
+        android:onRefresh="@{viewmodel}"
+        app:refreshing="@{viewmodel.dataLoading}">
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.constraint.ConstraintLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/root_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f7f6c7">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_articles"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:items="@{viewmodel.items}"/>
+
+        </android.support.constraint.ConstraintLayout>
+    </com.alex.kotlin.test.util.ScrollChildSwipeRefreshLayout>
+</layout>

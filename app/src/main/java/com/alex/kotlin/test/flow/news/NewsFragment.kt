@@ -1,22 +1,24 @@
 package com.alex.kotlin.test.flow.news
 
-import android.content.Intent
-import android.net.Uri
-import android.support.v7.widget.DefaultItemAnimator
+import android.content.ContentValues.TAG
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.alex.kotlin.test.R
 import com.alex.kotlin.test.adapter.ArticlesAdapter
-import com.alex.kotlin.test.base.BaseMvpFragment
-import com.alex.kotlin.test.db.ArticlesEntity
-import kotlinx.android.synthetic.main.fragment_news.*
+import com.alex.kotlin.test.databinding.FragmentNewsBinding
 
 
-class NewsFragment :
-        BaseMvpFragment<NewsContract.View, NewsContract.Presenter>(),
-        NewsContract.View, ArticlesAdapter.ItemClick {
+class NewsFragment : Fragment() {
 
-    override var presenter: NewsContract.Presenter = NewsPresenter()
-    private var mAdapter: ArticlesAdapter? = null
+    private lateinit var viewDataBinding: FragmentNewsBinding
+    private lateinit var viewModel: NewsViewModel
+    private var adapter: ArticlesAdapter? = null
 
     companion object {
         fun newInstance(): NewsFragment {
@@ -24,34 +26,47 @@ class NewsFragment :
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.fragment_news
-
-    override fun onResume() {
-        super.onResume()
-        showProgress()
-        initRecyclerView()
-        presenter.loadNews()
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        viewModel = (activity as NewsActivity).obtainViewModel()
+        this.getLifecycle().addObserver(viewModel)
+        this.getLifecycle().addObserver(viewModel.repository)
+        viewDataBinding = FragmentNewsBinding.inflate(inflater, container, false)
+                .apply {
+            viewmodel = viewModel
+        }
+        return viewDataBinding.root
     }
 
-    private fun initRecyclerView() {
-        rv_articles.setItemAnimator(DefaultItemAnimator())
-        val mLinearLayoutManager = LinearLayoutManager(context)
-        rv_articles.setLayoutManager(mLinearLayoutManager)
-        mAdapter = ArticlesAdapter()
-        rv_articles.setAdapter(mAdapter)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setupListAdapter()
+        viewModel.getNews()
+        setupRefreshLayout()
     }
 
-    override fun showNews(articles: List<ArticlesEntity>) {
-        hideProgress()
-        mAdapter?.setClickCallBack(this);
-        mAdapter?.setArticles(articles);
+    private fun setupListAdapter() {
+        val viewModel = viewDataBinding.viewmodel
+        if (viewModel != null) {
+            adapter = ArticlesAdapter(viewModel)
+            viewDataBinding.rvArticles.adapter = adapter
+            viewDataBinding.rvArticles.layoutManager = LinearLayoutManager(context)
+        } else {
+            Log.w(TAG, "ViewModel not initialized when attempting to set up adapter.")
+        }
     }
 
-    override fun openUrl(url: String?) {
-        val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(url)
-        startActivity(i)
+    private fun setupRefreshLayout() {
+        viewDataBinding.refreshLayout.run {
+            setColorSchemeColors(
+                    ContextCompat.getColor(activity, R.color.colorPrimary),
+                    ContextCompat.getColor(activity, R.color.colorAccent),
+                    ContextCompat.getColor(activity, R.color.colorPrimaryDark)
+            )
+            scrollUpChild = viewDataBinding.rvArticles
+        }
     }
 }
+
 
 

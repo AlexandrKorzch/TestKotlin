@@ -6,7 +6,6 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import com.alex.kotlin.test.R
-import com.alex.kotlin.test.interfaces.FragmentShow
 
 
 class MenuManager {

@@ -1,11 +1,15 @@
 package com.alex.kotlin.test.model
 
+import io.realm.RealmObject
 
-data class Articles(var id: Long?,
-                    val publishedAt: String?,
-                    val author: String?,
-                    val urlToImage: String?,
-                    val title: String?,
-                    val source: Source,
-                    val description: String?,
-                    val url: String?)
+
+open class Articles() : RealmObject(){
+    var id: Long? = null
+    var publishedAt: String? = null
+    var author: String? = null
+    var urlToImage: String? = null
+    var title: String? = null
+    var source: Source? = null
+    var description: String? = null
+    var url: String? = null
+}

@@ -4,9 +4,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-/**
- * Created by alex on 3/20/18.
- */
 private val YYYY_MM_DD = "yyyy-MM-dd'T'HH:mm:ssZ"
 private val YEAR_MONTH_DAY = "yyyy-MM-dd"
 
