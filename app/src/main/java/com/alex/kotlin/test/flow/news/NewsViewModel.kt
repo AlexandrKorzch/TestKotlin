@@ -42,6 +42,10 @@ class NewsViewModel(context: Application, val repository: Repository)
         getNews()
     }
 
+    fun openUrl(url: String){
+        openUrlEvent.value = url
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun clear() {
         disposables.dispose()
