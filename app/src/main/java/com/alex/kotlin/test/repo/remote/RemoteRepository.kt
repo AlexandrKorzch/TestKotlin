@@ -6,7 +6,6 @@ import com.alex.kotlin.test.repo.remote.api.ApiSettings.KEY
 import com.alex.kotlin.test.repo.remote.api.RetrofitCreator.initRetrofit
 import com.alex.kotlin.test.repo.remote.api.RetrofitCreator.initServices
 import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 
 object RemoteRepository : RemoteDataSource {
@@ -20,6 +19,5 @@ object RemoteRepository : RemoteDataSource {
     override fun getNews(country: String, category: String): Flowable<List<Articles>> {
         return api.getNews(country, category, KEY)
                 .map({ it.articles })
-                .observeOn(AndroidSchedulers.mainThread())
     }
 }
