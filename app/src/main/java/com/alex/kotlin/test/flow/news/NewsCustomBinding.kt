@@ -21,7 +21,7 @@ fun setItems(recyclerView: RecyclerView, articles: ObservableList<Articles>) {
 
 @BindingAdapter("bind:formattedDate")
 fun setFormattedDate(textView: TextView, date: String) {
-    textView.setText(formatDate(date))
+    textView.text = formatDate(date)
 }
 
 @BindingAdapter("bind:imageUrl")

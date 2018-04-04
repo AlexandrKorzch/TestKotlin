@@ -17,7 +17,7 @@ import io.reactivex.disposables.CompositeDisposable
 class NewsViewModel(context: Application, val repository: Repository)
     : AndroidViewModel(context), LifecycleObserver {
 
-    val disposables = CompositeDisposable()
+    private val disposables = CompositeDisposable()
     val openUrlEvent = SingleLiveEvent<String>()
     val items = ObservableArrayList<Articles?>()
     val dataLoading = ObservableBoolean(false)
@@ -47,7 +47,7 @@ class NewsViewModel(context: Application, val repository: Repository)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun clear() {
+    private fun clear() {
         disposables.dispose()
         disposables.clear()
     }

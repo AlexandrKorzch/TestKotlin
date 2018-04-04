@@ -1,8 +1,6 @@
 package com.alex.kotlin.test.repo.remote.api
 
-/**
- * Created by alex on 3/19/18.
- */
+
 object ApiSettings {
 
     /*server*/

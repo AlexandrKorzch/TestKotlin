@@ -14,7 +14,7 @@ class ArticlesAdapter(private val newsViewModel: NewsViewModel)
     private var mArticles: List<Articles> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent?.getContext())
+        val layoutInflater = LayoutInflater.from(parent?.context)
         val articleBind = ArticleLayoutBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(articleBind, newsViewModel)
     }
@@ -30,7 +30,7 @@ class ArticlesAdapter(private val newsViewModel: NewsViewModel)
         notifyDataSetChanged()
     }
 
-    class ViewHolder(val binding: ArticleLayoutBinding, var newsViewModel: NewsViewModel?)
+    class ViewHolder(private val binding: ArticleLayoutBinding, private var newsViewModel: NewsViewModel?)
         : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(article: Articles) {

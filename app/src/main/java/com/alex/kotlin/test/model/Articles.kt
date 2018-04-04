@@ -3,7 +3,7 @@ package com.alex.kotlin.test.model
 import io.realm.RealmObject
 
 
-open class Articles() : RealmObject(){
+open class Articles : RealmObject(){
     var id: Long? = null
     var publishedAt: String? = null
     var author: String? = null

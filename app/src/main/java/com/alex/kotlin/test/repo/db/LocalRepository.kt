@@ -28,7 +28,7 @@ object LocalRepository : LocalDataSource {
                 .where(NewsList::class.java)
                 .findFirst()
                 ?.articles
-        if (articles == null) articles = RealmList<Articles>()
+        if (articles == null) articles = RealmList()
         return Flowable.just(articles)
     }
 }

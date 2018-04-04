@@ -3,7 +3,7 @@ package com.alex.kotlin.test.repo
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
-import com.alex.kotlin.test.global.Const.BUSINES
+import com.alex.kotlin.test.global.Const.BUSINESS
 import com.alex.kotlin.test.global.Const.COUNTRY
 import com.alex.kotlin.test.model.Articles
 import com.alex.kotlin.test.repo.db.LocalDataSource
@@ -27,10 +27,10 @@ class Repository(
         return localDataSource.getNews()
                 .flatMap {
                     if(it.size == 0) {
-                        newsRequest(COUNTRY, BUSINES)
+                        newsRequest(COUNTRY, BUSINESS)
                     }else{
                         Flowable.just(it)
-                                .doOnNext({disposables.add(newsRequest(COUNTRY, BUSINES).subscribe())})
+                                .doOnNext({disposables.add(newsRequest(COUNTRY, BUSINESS).subscribe())})
                     }
                 }
     }

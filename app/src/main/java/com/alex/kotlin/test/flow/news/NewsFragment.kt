@@ -29,8 +29,8 @@ class NewsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         viewModel = (activity as NewsActivity).obtainViewModel()
-        this.getLifecycle().addObserver(viewModel)
-        this.getLifecycle().addObserver(viewModel.repository)
+        this.lifecycle.addObserver(viewModel)
+        this.lifecycle.addObserver(viewModel.repository)
         viewDataBinding = FragmentNewsBinding.inflate(inflater, container, false)
                 .apply {
             viewmodel = viewModel

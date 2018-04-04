@@ -16,13 +16,13 @@ class NewsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_news)
         setupViewFragment()
         obtainViewModel().apply {
-            openUrlEvent.observe(this@NewsActivity, Observer<String> {
+            openUrlEvent.observe(this@NewsActivity, Observer {
                 this@NewsActivity.openUrl(it)
             })
         }
     }
 
-     fun openUrl(url: String?) {
+     private fun openUrl(url: String?) {
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         startActivity(i)
