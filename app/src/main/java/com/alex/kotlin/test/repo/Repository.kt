@@ -21,6 +21,12 @@ class Repository(
         private val socketDataSource: SocketDataSource
 ) : DataSource, LifecycleObserver {
 
+
+    override fun setTheme(theme: Int) = spDataSource.setTheme(theme)
+
+    override fun getTheme(): Int? = spDataSource.getTheme()
+
+
     val disposables = CompositeDisposable()
 
     fun getNews(): Flowable<List<Articles>>{
