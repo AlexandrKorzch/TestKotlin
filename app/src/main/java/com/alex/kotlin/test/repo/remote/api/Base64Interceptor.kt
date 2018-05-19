@@ -1,5 +1,6 @@
 package com.alex.kotlin.test.repo.remote.api
 
+import android.util.Base64
 import android.util.Log
 import okhttp3.*
 import okio.Buffer
@@ -43,11 +44,10 @@ class Base64Interceptor(val identificator: String) : Interceptor {
     private fun getModifiedRequestBody(originalRequest: Request): RequestBody? {
         val originalRequestBodyString = bodyToString(originalRequest.body())
         Log.d(TAG, "getModifiedRequestBody - originalRequestBodyString - $originalRequestBodyString")
-        val modifiedRequestBodyString = "hello" //todo change originalRequestBodyString encode base64 decodeBase64(decodeBody)
+        val data = originalRequestBodyString.toString().toByteArray(Charset.forName("UTF-8"))
+        val modifiedRequestBodyString = Base64.encodeToString(data, Base64.DEFAULT)
         Log.d(TAG, "getModifiedRequestBody - modifiedRequestBodyString - $originalRequestBodyString")
-        val modifiedRequestBody
-                = RequestBody.create(originalRequest.body()?.contentType(), modifiedRequestBodyString)
-        return modifiedRequestBody
+        return RequestBody.create(originalRequest.body()?.contentType(), modifiedRequestBodyString)
     }
 
     private fun modifiedRequestCreator(originalRequest: Request, body: RequestBody?,
@@ -82,14 +82,11 @@ class Base64Interceptor(val identificator: String) : Interceptor {
         val buffer = source?.buffer()
         val contentType = originalResponse.body()?.contentType()//contentType - application/json; charset=utf-8
         var responseBodyString = buffer?.clone()?.readString(Charset.forName("UTF-8"))
-        Log.d("TAG", "$responseBodyString")
-
-        //decode
-        responseBodyString = "{\"id\":\"business-insider\",\"name\":\"Business Insider\"}" // change here
-        //decodeBase64(responseBodyString) // change here
-
+        Log.d(TAG, "$responseBodyString")
+        //decode for test
+//        responseBodyString ="eyJzdGF0dXMiOiJvayIsInRvdGFsUmVzdWx0cyI6MjAsImFydGljbGVzIjpbeyJzb3VyY2UiOnsiaWQiOm51bGwsIm5hbWUiOiJMYXRpbWVzLmNvbSJ9LCJhdXRob3IiOiJIdWdvIE1hcnRpbiIsInRpdGxlIjoiQWxhc2thIEFpcmxpbmVzIHRvIGNsb3NlIE5ldyBZb3JrIHBpbG90IGJhc2UgdG8gZm9jdXMgb24gV2VzdCBDb2FzdCBkZW1hbmQiLCJkZXNjcmlwdGlvbiI6IlRoZSBTZWF0dGxlLWJhc2VkIGNhcnJpZXIgaXMgYXNraW5nIG1vcmUgdGhhbiAxMDAgcGlsb3RzIHRvIHJlbG9jYXRlIHRvIENhbGlmb3JuaWEuIiwidXJsIjoiaHR0cDovL3d3dy5sYXRpbWVzLmNvbS9idXNpbmVzcy9sYS1maS10cmF2ZWwtYnJpZWZjYXNlMy1hbGFza2Etd2VzdC1jb2FzdC0yMDE4MDUxOS1zdG9yeS5odG1sIiwidXJsVG9JbWFnZSI6Imh0dHA6Ly93d3cubGF0aW1lcy5jb20vcmVzaXplci9YX1lYQ1hzczFXUVFLUnBTRklPQ0VSWGYyX1E9LzEyMDB4MC9hcmMtYW5nbGVyZmlzaC1hcmMyLXByb2QtdHJvbmMuczMuYW1hem9uYXdzLmNvbS9wdWJsaWMvV0VOSVFWVFg1SkcySERURlVSTUVCQVNGTEEuanBnIiwicHVibGlzaGVkQXQiOiIyMDE4LTA1LTE5VDEzOjAxOjMwWiJ9XX0=" // change here
+        responseBodyString = decodeBase64(responseBodyString)?.string(Charset.forName("UTF-8"))// change here
         val newBody = ResponseBody.create(contentType, responseBodyString)
-
         return originalResponse.newBuilder()
                 .body(newBody)
                 .build()
@@ -108,52 +105,3 @@ class Base64Interceptor(val identificator: String) : Interceptor {
         Log.d(TAG, "$identificator $tag body - ${response?.body()}")
     }
 }
-
-
-//    Авторизация/Регистрация пользователя  /api/v1.0/user/login/  POST
-//@POST("user/login") // OK
-//fun getSignInRequest(@Header("Authorization") token: String,
-//                     @Header("accept-language") lang: String,
-//                     @Body requestBodyBase64: RequestBody): Observable<Response<ResponseBody»
-
-//override fun getCategoriesListRequest(requestModel: RequestModel): Observable<ResponseModel> {
-//    return getBaseRequestObservable(requestModel,
-//            api.getCategoriesListRequest(requestModel.token, requestModel.lang))
-//}
-//
-//private fun printRequestModel(requestModel: RequestModel) {
-//    if (BuildConfig.DEBUG)
-//        logD("JSON", "Authorization: ${requestModel.token} & accept-language: ${requestModel.lang} | Request JsonBody: " + requestModel.jsonBody)
-//}
-//
-//private fun getBaseRequestObservable(requestModel: RequestModel, request: Observable<Response<ResponseBody»): Observable<ResponseModel> {
-//    printRequestModel(requestModel)
-//    return request.subscribeOn(Schedulers.newThread())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .unsubscribeOn(Schedulers.io())
-//            .map<ResponseModel> { response -> getResponseModel(response) }
-//            .doOnError { throwable -> logD("JSON", "OneInteractorImpl Throwable.doOnError() " + throwable.message) }
-//}
-//
-//private fun getResponseModel(response: Response<ResponseBody>): ResponseModel? {
-//    val baseResponse = ResponseModel()
-//    var decodeBody = ""
-//    if (response.body() != null) {
-//        logD("JSON", "BaseRequestObservable response -> $response")
-//        decodeBody = response.body()!!.string()                                                  // Body
-//        baseResponse.isSuccessResponse = decodeBody != null
-//    } else {
-//        logE("JSON", "BaseRequestObservable response-error -> $response")
-//        if (response.errorBody() != null)
-//            decodeBody = response.errorBody()!!.string()                                         // ErrorBody
-//    }
-//    val json = decodeBase64(decodeBody)
-//    baseResponse.errorCode = response.code()
-//    baseResponse.jsonString = json
-//    if (baseResponse.isSuccess) {
-//        logD("JSON", "BaseRequestObservable JSON response -> $json")
-//    } else {
-//        logE("JSON", "BaseRequestObservable JSON response-error -> $json")
-//    }
-//    return todo500(baseResponse) //TODO
-//}
