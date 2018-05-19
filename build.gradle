@@ -5,8 +5,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.31"
+        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.41"
         classpath "io.realm:realm-gradle-plugin:5.0.0"
     }
     repositories {
@@ -34,7 +34,7 @@ ext {
     minSdkVersion = 17
     targetSdkVersion = 27
 
-    supportLibVersion = '26.1.0'
+    supportLibVersion = '27.1.0'
 
     retrofitVersion = '2.3.0'
     okhttpVersion = '3.8.0'

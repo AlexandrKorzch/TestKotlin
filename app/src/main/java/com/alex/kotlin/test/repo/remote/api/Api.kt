@@ -16,5 +16,5 @@ interface Api {
     @GET(GET_NEWS)
     fun getNews(@Query(COUNTRY) country: String,
                 @Query(CATEGORY) category: String,
-                @Query(API_KEY) key : String): Flowable<Data>
+                @Query(API_KEY) key : String): Flowable<Object>
 }
