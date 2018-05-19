@@ -16,8 +16,8 @@ object RemoteRepository : RemoteDataSource {
         initServices(initRetrofit())
     }
 
-    override fun getNews(country: String, category: String): Flowable<List<Articles>> {
+    override fun getNews(country: String, category: String): Flowable<Object> {
         return api.getNews(country, category, KEY)
-                .map({ it.articles })
+//                .map({ it.articles })
     }
 }

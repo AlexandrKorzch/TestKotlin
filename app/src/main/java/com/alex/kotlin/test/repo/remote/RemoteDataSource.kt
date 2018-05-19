@@ -6,5 +6,5 @@ import io.reactivex.Flowable
 
 interface RemoteDataSource {
 
-    fun getNews(country: String, category: String): Flowable<List<Articles>>
+    fun getNews(country: String, category: String): Flowable<Object>
 }

@@ -13,7 +13,7 @@ class ArticlesAdapter(private val newsViewModel: NewsViewModel)
 
     private var mArticles: List<Articles> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
         val articleBind = ArticleLayoutBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(articleBind, newsViewModel)

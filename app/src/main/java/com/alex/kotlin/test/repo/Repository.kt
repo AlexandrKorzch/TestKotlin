@@ -29,21 +29,21 @@ class Repository(
 
     val disposables = CompositeDisposable()
 
-    fun getNews(): Flowable<List<Articles>>{
-        return localDataSource.getNews()
-                .flatMap {
-                    if(it.size == 0) {
-                        newsRequest(COUNTRY, BUSINESS)
-                    }else{
-                        Flowable.just(it)
-                                .doOnNext({disposables.add(newsRequest(COUNTRY, BUSINESS).subscribe())})
-                    }
-                }
-    }
+//    fun getNews(): Flowable<List<Articles>>{
+//        return localDataSource.getNews()
+//                .flatMap {
+//                    if(it.size == 0) {
+//                        newsRequest(COUNTRY, BUSINESS)
+//                    }else{
+//                        Flowable.just(it)
+//                                .doOnNext({disposables.add(newsRequest(COUNTRY, BUSINESS).subscribe())})
+//                    }
+//                }
+//    }
 
-    private fun newsRequest(country: String, category: String) : Flowable<List<Articles>> {
+    fun newsRequest(country: String, category: String) : Flowable<Object> {
         return remoteDataSource.getNews(country, category)
-                .doOnNext {localDataSource.setNews(it) }
+//                .doOnNext {localDataSource.setNews(it) }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
