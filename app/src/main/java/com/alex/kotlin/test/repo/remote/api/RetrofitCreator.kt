@@ -1,5 +1,6 @@
 package com.alex.kotlin.test.repo.remote.api
 
+import com.alex.kotlin.test.BuildConfig
 import com.alex.kotlin.test.repo.remote.RemoteRepository
 import com.google.gson.GsonBuilder
 import okhttp3.*
@@ -13,10 +14,19 @@ object RetrofitCreator {
 
     fun initRetrofit(): Retrofit {
 
+
         val client = OkHttpClient.Builder().apply {
             networkInterceptors().add(Base64Interceptor("network"))
-//            addInterceptor(Base64Interceptor("application"))
-            addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            networkInterceptors().add(TokenInterceptor())
+            networkInterceptors().add(LanguageInterceptor())
+
+            if (BuildConfig.DEBUG) {
+                val logging = HttpLoggingInterceptor()
+                        .setLevel(HttpLoggingInterceptor.Level.BODY)
+                if (!interceptors().contains(logging)) {
+                    addInterceptor(logging)
+                }
+            }
         }
 
         return Retrofit.Builder()

@@ -14,13 +14,10 @@ class Base64Interceptor(val identificator: String) : Interceptor {
 
     val TAG = "Base64Interceptor"
 
-    val token = "TOKEN"
-    val language = "LANGUAGE"
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         log("originalRequest", originalRequest)
-        val modifiedRequest = getModifiedRequest(originalRequest, token, language)
+        val modifiedRequest = getModifiedRequest(originalRequest)
         log("modifiedRequest", modifiedRequest)
         val originalResponse = chain.proceed(modifiedRequest)
         log("originalResponse", originalResponse)
@@ -30,14 +27,14 @@ class Base64Interceptor(val identificator: String) : Interceptor {
     }
 
     //request
-    private fun getModifiedRequest(originalRequest: Request, token: String, language: String): Request? {
+    private fun getModifiedRequest(originalRequest: Request): Request? {
         return if (originalRequest.body() == null) {
             Log.d(TAG, "getModifiedRequest - originalRequest.body() = null")
-            modifiedRequestCreator(originalRequest, originalRequest.body(), token, language)
+            modifiedRequestCreator(originalRequest, originalRequest.body())
         } else {
             Log.d(TAG, "getModifiedRequest - originalRequest.body() != null")
             val modifiedRequestBody = getModifiedRequestBody(originalRequest)
-            modifiedRequestCreator(originalRequest, modifiedRequestBody, token, language)
+            modifiedRequestCreator(originalRequest, modifiedRequestBody)
         }
     }
 
@@ -50,11 +47,9 @@ class Base64Interceptor(val identificator: String) : Interceptor {
         return RequestBody.create(originalRequest.body()?.contentType(), modifiedRequestBodyString)
     }
 
-    private fun modifiedRequestCreator(originalRequest: Request, body: RequestBody?,
-                                       token: String, language: String): Request? {
+
+    private fun modifiedRequestCreator(originalRequest: Request, body: RequestBody?): Request? {
         return originalRequest.newBuilder()
-                .header("Authorization", token)
-                .header("accept-language", language)
                 .method(originalRequest.method(), body)
                 .build()
     }
